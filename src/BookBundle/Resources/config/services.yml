@@ -1,9 +1,12 @@
 services:
+    default_controller:
+        class: BookBundle\Controller\DefaultController
+
     author.api.v1:
-        class: BookBundle\Contoller\Api\v1\AuthorController
+        class: BookBundle\Controller\Api\v1\AuthorController
 
     book.api.v1:
-        class: BookBundle\Contoller\Api\v1\BookController
+        class: BookBundle\Controller\Api\v1\BookController
 
     book_manager.api.v1:
         class: BookBundle\Service\Api\v1\BookManager

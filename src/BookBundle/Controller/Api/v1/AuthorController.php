@@ -1,5 +1,5 @@
 <?php
-namespace BookBundle\Contoller\Api\v1;
+namespace BookBundle\Controller\Api\v1;
 
 use BookBundle\Entity\Author as AuthorEntity;
 use BookBundle\Entity\Author;

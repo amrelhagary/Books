@@ -1,46 +1,7 @@
-#Book API Routes
-book_list:
-    path: "/book"
-    defaults: { _controller: "book.api.v1:listAction", _format: json }
+imports:
+    { resource: "api_routing.yml", prefix: /api/v1 }
+
+default:
+    path: "/"
+    defaults: { _controller: "default_controller:defaultAction", _format: html }
     methods:  [GET, HEAD]
-
-book_list_by_author:
-    path: "/book/author/{authorId}"
-    defaults: { _controller: "book.api.v1:getBooksByAuthorAction", _format: json }
-    methods:  [GET, HEAD]
-
-book_edit:
-    path: "/admin/book/{id}"
-    defaults: { _controller: "book.api.v1:editAction", _format: json }
-    methods:  [PUT]
-
-book_add:
-    path: "/admin/book"
-    defaults: { _controller: "book.api.v1:addAction", _format: json }
-    methods:  [POST]
-
-book_delete:
-    path: "/admin/book/{id}"
-    defaults: { _controller: "book.api.v1:deleteAction", _format: json }
-    methods:  [DELETE]
-
-# Author API Routes
-author_list:
-    path: "/author"
-    defaults: { _controller: "author.api.v1:listAction", _format: json }
-    methods:  [GET, HEAD]
-
-author_add:
-    path: "/admin/author"
-    defaults: { _controller: "author.api.v1:addAction", _format: json }
-    methods:  [POST]
-
-author_edit:
-    path: "/admin/author/{id}"
-    defaults: { _controller: "author.api.v1:editAction", _format: json }
-    methods:  [PUT]
-
-author_delete:
-    path: "/admin/author/{id}"
-    defaults: { _controller: "author.api.v1:deleteAction", _format: json }
-    methods:  [DELETE]
