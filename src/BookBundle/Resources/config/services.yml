@@ -1,0 +1,12 @@
+services:
+    author.api.v1:
+        class: BookBundle\Contoller\Api\v1\AuthorController
+
+    book.api.v1:
+        class: BookBundle\Contoller\Api\v1\BookController
+
+    book_manager.api.v1:
+        class: BookBundle\Service\Api\v1\BookManager
+        arguments:
+            $em: "@doctrine.orm.entity_manager"
+            $class: BookBundle\Entity\Book
