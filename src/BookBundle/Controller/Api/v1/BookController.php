@@ -35,11 +35,13 @@ class BookController extends Controller
      */
     public function AddAction(Request $request)
     {
+        $logger = $this->get('logger');
         $em = $this->getDoctrine()->getManager();
         $body = $request->getContent();
         $data = json_decode($body, true);
 
         if(!$data){
+            $logger->error('Invalid json data format');
             return new JsonResponse("Invalid Json data format", 500);
         }
 
@@ -51,6 +53,7 @@ class BookController extends Controller
 
 
         if(!$authors){
+            $logger->error('Author not found');
             return new JsonResponse("Authors not found", 404);
         }
 
@@ -59,14 +62,14 @@ class BookController extends Controller
         $errors = $validator->validate($book);
 
         if(count($errors) > 0){
+            $logger->error('Error validating book form: ' . Helper::formatErrorMessage($errors));
             return new JsonResponse(["status" => "error", "message" => Helper::formatErrorMessage($errors)], 500);
         }else{
-
             $bookManager = $this->get('book_manager.api.v1');
-
             try {
                 $bookManager->createBook($book, $authors);
             } catch (\Exception $e) {
+                $logger->error('Error saving data: ' . $e->getMessage());
                 return new JsonResponse(["status" => "error", "message" => $e->getMessage()], 500);
             }
 
@@ -82,6 +85,7 @@ class BookController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        $logger = $this->get('logger');
         $em = $this->getDoctrine()->getManager();
         $body = $request->getContent();
         $data = json_decode($body, true);
@@ -89,6 +93,7 @@ class BookController extends Controller
         $book = $em->getRepository(Book::class)->findOneBy(['id' => $id]);
 
         if(!$book){
+            $logger->error('Book Not found');
             return new JsonResponse("Book Not found", 500);
         }
 
@@ -97,6 +102,7 @@ class BookController extends Controller
             $authors = $em->getRepository(Author::class)->findBy(['id' => $data['authors']]);
 
             if(!$authors){
+                $logger->error('Authors Not found');
                 return new JsonResponse("Authors not found", 404);
             }
 
@@ -111,6 +117,7 @@ class BookController extends Controller
         $errors = $validator->validate($book);
 
         if(count($errors) > 0){
+            $logger->error('Error validating book form: ' . Helper::formatErrorMessage($errors));
             return new JsonResponse(["status" => "error", "message" => Helper::formatErrorMessage($errors)], 500);
         }else{
 
@@ -134,11 +141,13 @@ class BookController extends Controller
      */
     public function deleteAction($id)
     {
+        $logger = $this->get('logger');
         $id = intval($id);
         $em = $this->getDoctrine()->getManager();
         $book = $em->getRepository(Book::class)->findOneBy(['id' => $id]);
 
         if(!$book){
+            $logger->error('Book Not found');
             return new JsonResponse("Book Not found", 404);
         }
 
@@ -146,6 +155,7 @@ class BookController extends Controller
             $em->remove($book);
             $em->flush();
         }catch (\Exception $e){
+            $logger->error('Error delete book ' . $e->getMessage());
             return new JsonResponse(["status"=> "error", "message" => $e->getMessage()], 500);
         }
 
