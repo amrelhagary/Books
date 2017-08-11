@@ -13,3 +13,8 @@ services:
         arguments:
             $em: "@doctrine.orm.entity_manager"
             $class: BookBundle\Entity\Book
+
+    book_api.exception_listener:
+        class: BookBundle\EventListener\ExceptionalListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
